@@ -35,6 +35,11 @@ const enrollmentSchema = new mongoose_1.Schema({
         ref: "Course",
         required: true,
     },
+    organizationId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Organization",
+        required: [true, "Organization is required"],
+    },
     level: {
         type: Number,
         required: true,
@@ -71,6 +76,10 @@ const enrollmentSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-// Prevent duplicate enrollments
-enrollmentSchema.index({ student: 1, course: 1, semester: 1, session: 1 }, { unique: true });
+// Prevent duplicate enrollments within organization
+enrollmentSchema.index({ organizationId: 1, student: 1, course: 1, semester: 1, session: 1 }, { unique: true });
+// Additional indexes for organization-scoped queries
+enrollmentSchema.index({ organizationId: 1, student: 1 });
+enrollmentSchema.index({ organizationId: 1, course: 1 });
+enrollmentSchema.index({ organizationId: 1, status: 1 });
 exports.default = mongoose_1.default.model("Enrollment", enrollmentSchema);

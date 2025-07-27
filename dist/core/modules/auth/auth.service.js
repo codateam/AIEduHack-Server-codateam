@@ -26,21 +26,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsersByRole = exports.createUser = exports.loginWithEmailAndPassword = exports.findUserById = exports.findUser = void 0;
+exports.getUsersByOrganization = exports.getUsersByRole = exports.createSuperAdmin = exports.createUser = exports.loginWithEmailAndPassword = exports.findUserById = exports.findUser = void 0;
 const auth_model_1 = __importDefault(require("./auth.model"));
 const bcrypt = __importStar(require("bcrypt"));
-const findUser = async (email) => {
-    const isUser = await auth_model_1.default.findOne({ email: email });
+const org_service_1 = require("../org/org.service");
+const findUser = async (email, organizationId) => {
+    const query = { email: email };
+    if (organizationId) {
+        query.organizationId = organizationId;
+    }
+    const isUser = await auth_model_1.default.findOne(query).populate('organizationId', 'name code type');
     return isUser;
 };
 exports.findUser = findUser;
 const findUserById = async (id) => {
-    const isUser = await auth_model_1.default.findById(id).select("-password");
+    const isUser = await auth_model_1.default.findById(id).select("-password").populate('organizationId', 'name code type');
     return isUser;
 };
 exports.findUserById = findUserById;
 const loginWithEmailAndPassword = async (email, password) => {
-    const user = await auth_model_1.default.findOne({ email: email });
+    const user = await auth_model_1.default.findOne({ email: email }).populate('organizationId', 'name code type');
     if (!user) {
         throw new Error("Invalid email or password");
     }
@@ -48,43 +53,73 @@ const loginWithEmailAndPassword = async (email, password) => {
     if (!isPassValid) {
         throw new Error("Invalid email or password");
     }
+    if (!user.isApproved) {
+        throw new Error("Account pending approval");
+    }
     user.password = "";
     return user;
 };
 exports.loginWithEmailAndPassword = loginWithEmailAndPassword;
 const createUser = async (userData) => {
-    const isUser = await (0, exports.findUser)(userData.email);
+    // Handle organization lookup if orgCode is provided instead of organizationId
+    if (userData.orgCode && !userData.organizationId) {
+        const organization = await (0, org_service_1.getOrganizationByCode)(userData.orgCode);
+        if (!organization) {
+            throw new Error("Invalid organization code");
+        }
+        userData.organizationId = organization._id;
+        delete userData.orgCode;
+    }
+    if (!userData.organizationId) {
+        throw new Error("Organization is required");
+    }
+    const isUser = await (0, exports.findUser)(userData.email, userData.organizationId);
     if (isUser) {
-        throw new Error("user already exist");
+        throw new Error("User already exists in this organization");
     }
     const user = await auth_model_1.default.create(userData);
-    return user;
+    return await auth_model_1.default.findById(user._id).populate('organizationId', 'name code type');
 };
 exports.createUser = createUser;
-const getUsersByRole = async (role, page = 1, limit = 10, search = "") => {
+const createSuperAdmin = async (userData) => {
+    // Check if user with this email already exists
+    const existingUser = await auth_model_1.default.findOne({ email: userData.email });
+    if (existingUser) {
+        throw new Error("User with this email already exists");
+    }
+    // Check if super admin already exists
+    const existingSuperAdmin = await auth_model_1.default.findOne({ role: "super_admin" });
+    if (existingSuperAdmin) {
+        // If a super admin already exists, this could be for replacement
+        // The authorization middleware will ensure only existing super admin can do this
+        console.log("Warning: Creating additional super admin. Existing super admin should be removed if this is a replacement.");
+    }
+    // Super admin doesn't need organizationId
+    const superAdminData = Object.assign(Object.assign({}, userData), { role: "super_admin", isApproved: true, organizationId: undefined });
+    const user = await auth_model_1.default.create(superAdminData);
+    return await auth_model_1.default.findById(user._id).select("-password");
+};
+exports.createSuperAdmin = createSuperAdmin;
+const getUsersByRole = async (role, page = 1, limit = 10, search = "", organizationId) => {
     const skip = (page - 1) * limit;
+    const baseQuery = { role: role };
+    if (organizationId) {
+        baseQuery.organizationId = organizationId;
+    }
+    const searchQuery = Object.assign(Object.assign({}, baseQuery), { $or: [
+            { firstName: { $regex: search, $options: "i" } },
+            { lastName: { $regex: search, $options: "i" } },
+            { middleName: { $regex: search, $options: "i" } },
+            { matricNo: { $regex: search, $options: "i" } },
+        ] });
     const [users, total] = await Promise.all([
-        auth_model_1.default.find({
-            role: role,
-            $or: [
-                { firstName: { $regex: search, $options: "i" } },
-                { lastName: { $regex: search, $options: "i" } },
-                { middleName: { $regex: search, $options: "i" } },
-                { matricNo: { $regex: search, $options: "i" } },
-            ],
-        })
+        auth_model_1.default.find(searchQuery)
             .select("-password")
+            .populate('organizationId', 'name code type')
             .limit(limit)
-            .skip(skip),
-        auth_model_1.default.countDocuments({
-            role: role,
-            $or: [
-                { firstName: { $regex: search, $options: "i" } },
-                { lastName: { $regex: search, $options: "i" } },
-                { middleName: { $regex: search, $options: "i" } },
-                { matricNo: { $regex: search, $options: "i" } },
-            ],
-        }),
+            .skip(skip)
+            .sort({ createdAt: -1 }),
+        auth_model_1.default.countDocuments(searchQuery),
     ]);
     return {
         users,
@@ -99,3 +134,37 @@ const getUsersByRole = async (role, page = 1, limit = 10, search = "") => {
     };
 };
 exports.getUsersByRole = getUsersByRole;
+const getUsersByOrganization = async (organizationId, page = 1, limit = 10, search = "", role) => {
+    const skip = (page - 1) * limit;
+    const baseQuery = { organizationId };
+    if (role) {
+        baseQuery.role = role;
+    }
+    const searchQuery = Object.assign(Object.assign({}, baseQuery), { $or: [
+            { firstName: { $regex: search, $options: "i" } },
+            { lastName: { $regex: search, $options: "i" } },
+            { middleName: { $regex: search, $options: "i" } },
+            { matricNo: { $regex: search, $options: "i" } },
+        ] });
+    const [users, total] = await Promise.all([
+        auth_model_1.default.find(searchQuery)
+            .select("-password")
+            .populate('organizationId', 'name code type')
+            .limit(limit)
+            .skip(skip)
+            .sort({ createdAt: -1 }),
+        auth_model_1.default.countDocuments(searchQuery),
+    ]);
+    return {
+        users,
+        pagination: {
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+            hasNextPage: page < Math.ceil(total / limit),
+            hasPrevPage: page > 1,
+        },
+    };
+};
+exports.getUsersByOrganization = getUsersByOrganization;

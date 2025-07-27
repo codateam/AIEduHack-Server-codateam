@@ -20,5 +20,4 @@ node_modules
 */.npmignore
 */.npmrc
 */.yarnrc
-*/.yarnclea
-dist
+*/.yarnclean

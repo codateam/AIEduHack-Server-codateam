@@ -9,7 +9,11 @@
     "test-watch": "jest --detectOpenHandles --watch",
     "pm2-start": "pm2 start dist/server.js -l logs.txt -i max",
     "shotdown": "pm2 stop all",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
+    "migrate:organizations": "npx ts-node scripts/migrate-to-organizations.ts",
+    "create:superadmin": "npx ts-node scripts/create-super-admin.ts",
+    "test:public-org": "npx ts-node scripts/test-public-org-creation.ts",
+    "test:super-admin": "npx ts-node scripts/test-super-admin-endpoint.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.6.0",

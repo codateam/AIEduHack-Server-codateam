@@ -13,6 +13,7 @@ export const createExam = asyncHandler(async (req: Request, res: Response) => {
   const exam = await Exam.create({
     ...req.body,
     lecturer: req.user?.id,
+    organizationId: req.user?.organizationId,
   });
 
   res.status(201).json({

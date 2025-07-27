@@ -9,6 +9,7 @@ export interface ICourse extends Document {
   semester: "First" | "Second";
   department: string;
   lecturers: mongoose.Types.ObjectId[];
+  organizationId: mongoose.Types.ObjectId;
   createdAt: Date;
   courseMaterials: string[];
 }
@@ -18,7 +19,6 @@ const courseSchema = new Schema<ICourse>(
     code: {
       type: String,
       required: [true, "Course code is required"],
-      unique: true,
       trim: true,
       uppercase: true,
     },
@@ -58,6 +58,11 @@ const courseSchema = new Schema<ICourse>(
         required: [true, "At least one lecturer is required"],
       },
     ],
+    organizationId: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization",
+      required: [true, "Organization is required"],
+    },
     courseMaterials: [
       {
         type:String,
@@ -69,5 +74,10 @@ const courseSchema = new Schema<ICourse>(
     timestamps: true,
   },
 );
+
+// Compound index for organization-scoped course codes
+courseSchema.index({ organizationId: 1, code: 1 }, { unique: true });
+courseSchema.index({ organizationId: 1, department: 1 });
+courseSchema.index({ organizationId: 1, level: 1, semester: 1 });
 
 export default mongoose.model<ICourse>("Course", courseSchema);

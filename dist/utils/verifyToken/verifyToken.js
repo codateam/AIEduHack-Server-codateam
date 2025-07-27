@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyLecturer = exports.verifyAdmin = exports.verifyUser = void 0;
+exports.verifyLecturer = exports.verifySuperAdmin = exports.verifyAdmin = exports.verifyUser = void 0;
 const error_response_1 = __importDefault(require("../error-response"));
 const token_service_1 = require("../../core/modules/auth/token.service");
 const verifyUser = (req, res, next) => {
@@ -22,7 +22,7 @@ exports.verifyUser = verifyUser;
 const verifyAdmin = (req, res, next) => {
     const { user } = req;
     console.log({ admin: user });
-    if (user !== null && (user === null || user === void 0 ? void 0 : user.role) === "admin") {
+    if (user !== null && ((user === null || user === void 0 ? void 0 : user.role) === "admin")) {
         next();
     }
     else {
@@ -30,6 +30,17 @@ const verifyAdmin = (req, res, next) => {
     }
 };
 exports.verifyAdmin = verifyAdmin;
+const verifySuperAdmin = (req, res, next) => {
+    const { user } = req;
+    console.log({ superAdmin: user });
+    if (user !== null && (user === null || user === void 0 ? void 0 : user.role) === "super_admin") {
+        next();
+    }
+    else {
+        throw new error_response_1.default("unauthorized access, only for super admin", 401);
+    }
+};
+exports.verifySuperAdmin = verifySuperAdmin;
 const verifyLecturer = (req, res, next) => {
     const { user } = req;
     if (user !== null &&

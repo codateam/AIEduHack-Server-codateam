@@ -2,3 +2,9 @@ node_modules
 .env
 coverage
 .history
+scripts
+ORGANIZATION_SYSTEM.md
+IMPLEMENTATION_SUMMARY.md
+SUPER_ADMIN_ENDPOINT.md
+QUICK_START.md
+SUPER_ADMIN_ENDPOINT.md

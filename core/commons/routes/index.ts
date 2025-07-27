@@ -1,5 +1,6 @@
 import * as express from "express";
 import authRoutes from "../../../core/modules/auth/auth.router";
+import orgRoutes from "../../modules/org/org.routes";
 import courseRoutes from "../../modules/course/course.routes";
 import enrollmentRoutes from "../../modules/enrollment/enrollment.routes";
 import examRoutes from "../../modules/exam/exam.routes";
@@ -17,6 +18,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", authRoutes);
+router.use("/organizations", orgRoutes);
 router.use("/courses", courseRoutes);
 router.use("/enrollments", enrollmentRoutes);
 router.use("/exams", examRoutes);

@@ -8,12 +8,12 @@ const error_response_1 = __importDefault(require("../../../utils/error-response"
 const enrollment_model_1 = __importDefault(require("./enrollment.model"));
 class EnrollmentService {
     // Create enrollment
-    async createEnrollment(data, userId, userRole) {
+    async createEnrollment(data, userId, userRole, userOrganizationId) {
         // Check if user is student enrolling themselves
         if (userRole === "student" && userId !== data.student) {
             throw new error_response_1.default("Students can only enroll themselves", 403);
         }
-        const enrollment = await enrollment_model_1.default.create(data);
+        const enrollment = await enrollment_model_1.default.create(Object.assign(Object.assign({}, data), { organizationId: userOrganizationId }));
         return enrollment;
     }
     // Get enrollments

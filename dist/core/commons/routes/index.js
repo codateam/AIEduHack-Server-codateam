@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
 const auth_router_1 = __importDefault(require("../../../core/modules/auth/auth.router"));
+const org_routes_1 = __importDefault(require("../../modules/org/org.routes"));
 const course_routes_1 = __importDefault(require("../../modules/course/course.routes"));
 const enrollment_routes_1 = __importDefault(require("../../modules/enrollment/enrollment.routes"));
 const exam_routes_1 = __importDefault(require("../../modules/exam/exam.routes"));
@@ -39,6 +40,7 @@ router.get("/", (req, res) => {
     res.send({ message: "Welcome to server!" });
 });
 router.use("/auth", auth_router_1.default);
+router.use("/organizations", org_routes_1.default);
 router.use("/courses", course_routes_1.default);
 router.use("/enrollments", enrollment_routes_1.default);
 router.use("/exams", exam_routes_1.default);

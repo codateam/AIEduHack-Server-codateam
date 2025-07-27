@@ -1767,3 +1767,45 @@
 [2025-07-06 12:34:59.634 PM] info: 	incoming-request
 [2025-07-06 12:36:49.753 PM] info: 	incoming-request
 [2025-07-06 12:36:50.053 PM] info: 	incoming-request
+[2025-07-27 07:43:45.530 PM] info: 	incoming-request
+[2025-07-27 07:46:27.709 PM] error: 	unauthorized access, only for admin
+[2025-07-27 07:46:27.711 PM] info: 	incoming-request
+[2025-07-27 10:07:20.805 PM] info: 	incoming-request
+[2025-07-27 10:09:02.805 PM] error: 	Path `organizationId` is required.
+[2025-07-27 10:09:02.807 PM] info: 	incoming-request
+[2025-07-27 10:26:25.391 PM] error: 	Path `organizationId` is required.
+[2025-07-27 10:26:25.393 PM] info: 	incoming-request
+[2025-07-27 10:32:11.754 PM] error: 	Path `organizationId` is required.
+[2025-07-27 10:32:11.756 PM] info: 	incoming-request
+[2025-07-27 10:37:02.368 PM] error: 	Path `organizationId` is required.
+[2025-07-27 10:37:02.386 PM] info: 	incoming-request
+[2025-07-27 10:38:41.100 PM] info: 	incoming-request
+[2025-07-27 10:39:01.097 PM] info: 	incoming-request
+[2025-07-27 10:45:27.624 PM] info: 	incoming-request
+[2025-07-27 11:02:25.806 PM] info: 	incoming-request
+[2025-07-27 11:03:25.499 PM] info: 	incoming-request
+[2025-07-27 11:05:11.892 PM] info: 	incoming-request
+[2025-07-27 11:06:21.269 PM] info: 	incoming-request
+[2025-07-27 11:08:46.251 PM] info: 	incoming-request
+[2025-07-27 11:10:46.020 PM] info: 	incoming-request
+[2025-07-27 11:15:57.469 PM] info: 	incoming-request
+[2025-07-27 11:16:27.244 PM] info: 	incoming-request
+[2025-07-27 11:17:09.231 PM] error: 	unauthorized access, only for admin
+[2025-07-27 11:17:09.233 PM] info: 	incoming-request
+[2025-07-27 11:20:21.615 PM] info: 	incoming-request
+[2025-07-27 11:21:32.644 PM] info: 	incoming-request
+[2025-07-27 11:21:53.826 PM] info: 	incoming-request
+[2025-07-27 11:22:31.420 PM] error: 	Expected double-quoted property name in JSON at position 155 (line 8 column 1)
+[2025-07-27 11:22:41.035 PM] info: 	incoming-request
+[2025-07-27 11:23:26.664 PM] error: 	Unauthenticated
+[2025-07-27 11:23:26.665 PM] info: 	incoming-request
+[2025-07-27 11:23:46.570 PM] info: 	incoming-request
+[2025-07-27 11:25:41.788 PM] error: 	unauthorized access, only for Lecturer and Admin
+[2025-07-27 11:25:41.790 PM] info: 	incoming-request
+[2025-07-27 11:31:47.647 PM] info: 	incoming-request
+[2025-07-27 11:34:21.830 PM] info: 	incoming-request
+[2025-07-27 11:35:13.651 PM] info: 	incoming-request
+[2025-07-27 11:35:48.997 PM] info: 	incoming-request
+[2025-07-27 11:36:46.755 PM] error: 	unauthorized access, only for admin
+[2025-07-27 11:36:46.757 PM] info: 	incoming-request
+[2025-07-27 11:39:38.249 PM] info: 	incoming-request

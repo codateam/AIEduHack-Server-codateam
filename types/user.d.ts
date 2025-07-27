@@ -9,6 +9,7 @@ export interface User {
   role: "admin" | "lecturer" | "student";
   userToken: boolean;
   email?: string;
+  organizationId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,6 +19,7 @@ declare global {
     interface User {
       id: string;
       role: string;
+      organizationId?: string;
       data?: any;
     }
   }

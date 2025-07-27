@@ -37,12 +37,23 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ["admin", "lecturer", "student"],
+      enum: ["admin", "lecturer", "student", "super_admin"],
       default: "student",
     },
+    organizationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Organization",
+      required: function(this: any) {
+        return this.role !== "admin" && this.role !== "super_admin";
+      },
+    },
     userToken: {
+      type: String,
+      default: "",
+    },
+    isApproved: {
       type: Boolean,
-      default: false,
+      default: true, // Auto-approve by default, can be changed per organization
     },
   },
   {
@@ -59,6 +70,10 @@ const userSchema = new mongoose.Schema<IUser>(
     },
   },
 );
+
+// Compound index for organization-scoped queries
+userSchema.index({ organizationId: 1, role: 1 });
+userSchema.index({ organizationId: 1, email: 1 });
 
 userSchema.pre("save", async function (next) {
   if (this.password) {

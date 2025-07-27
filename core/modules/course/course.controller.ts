@@ -13,7 +13,11 @@ export const createCourse = asyncHandler(
   async (req: Request, res: Response) => {
     const { user } = req;
 
-    const courseData = { ...req.body, lecturers: [user?.id?.toString() ?? ""] };
+    const courseData = { 
+      ...req.body, 
+      lecturers: [user?.id?.toString() ?? ""],
+      organizationId: user?.organizationId
+    };
 
     const course = await Course.create(courseData);
     if (course && courseData.courseMaterials && courseData.courseMaterials.length > 0) {

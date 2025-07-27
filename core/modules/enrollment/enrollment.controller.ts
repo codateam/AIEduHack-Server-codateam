@@ -15,6 +15,7 @@ export const enrollStudent = asyncHandler(
       { student, course, level, semester, session },
       req.user?.id?.toString() ?? "",
       req.user?.role ?? "",
+      req.user?.organizationId?.toString(),
     );
 
     response(res, "Student enrolled successfully", 201, enrollment);

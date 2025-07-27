@@ -13,13 +13,17 @@ export class EnrollmentService {
     },
     userId: string,
     userRole: string,
+    userOrganizationId?: string,
   ) {
     // Check if user is student enrolling themselves
     if (userRole === "student" && userId !== data.student) {
       throw new ErrorResponse("Students can only enroll themselves", 403);
     }
 
-    const enrollment = await Enrollment.create(data);
+    const enrollment = await Enrollment.create({
+      ...data,
+      organizationId: userOrganizationId,
+    });
     return enrollment;
   }
 

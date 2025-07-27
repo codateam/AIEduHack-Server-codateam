@@ -3,6 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IEnrollment extends Document {
   student: mongoose.Types.ObjectId;
   course: mongoose.Types.ObjectId;
+  organizationId: mongoose.Types.ObjectId;
   level: number;
   semester: "First" | "Second";
   session: string;
@@ -23,6 +24,11 @@ const enrollmentSchema = new Schema<IEnrollment>(
       type: Schema.Types.ObjectId,
       ref: "Course",
       required: true,
+    },
+    organizationId: {
+      type: Schema.Types.ObjectId,
+      ref: "Organization",
+      required: [true, "Organization is required"],
     },
     level: {
       type: Number,
@@ -63,10 +69,15 @@ const enrollmentSchema = new Schema<IEnrollment>(
   },
 );
 
-// Prevent duplicate enrollments
+// Prevent duplicate enrollments within organization
 enrollmentSchema.index(
-  { student: 1, course: 1, semester: 1, session: 1 },
+  { organizationId: 1, student: 1, course: 1, semester: 1, session: 1 },
   { unique: true },
 );
+
+// Additional indexes for organization-scoped queries
+enrollmentSchema.index({ organizationId: 1, student: 1 });
+enrollmentSchema.index({ organizationId: 1, course: 1 });
+enrollmentSchema.index({ organizationId: 1, status: 1 });
 
 export default mongoose.model<IEnrollment>("Enrollment", enrollmentSchema);

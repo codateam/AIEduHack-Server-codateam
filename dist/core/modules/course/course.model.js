@@ -28,7 +28,6 @@ const courseSchema = new mongoose_1.Schema({
     code: {
         type: String,
         required: [true, "Course code is required"],
-        unique: true,
         trim: true,
         uppercase: true,
     },
@@ -68,6 +67,11 @@ const courseSchema = new mongoose_1.Schema({
             required: [true, "At least one lecturer is required"],
         },
     ],
+    organizationId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Organization",
+        required: [true, "Organization is required"],
+    },
     courseMaterials: [
         {
             type: String,
@@ -77,4 +81,8 @@ const courseSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+// Compound index for organization-scoped course codes
+courseSchema.index({ organizationId: 1, code: 1 }, { unique: true });
+courseSchema.index({ organizationId: 1, department: 1 });
+courseSchema.index({ organizationId: 1, level: 1, semester: 1 });
 exports.default = mongoose_1.default.model("Course", courseSchema);

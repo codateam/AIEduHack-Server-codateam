@@ -28,6 +28,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 exports.config = {
     PORT: process.env.PORT,
+    AI_BASE_URL: process.env.AI_BASE_URL,
     mongo: {
         url: process.env.MONGO_URI,
         dbName: process.env.MONGO_DB_NAME,

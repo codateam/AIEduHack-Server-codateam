@@ -9,12 +9,12 @@ const async_handler_1 = require("../../../utils/async-handler");
 const error_response_1 = __importDefault(require("../../../utils/error-response"));
 // Create a new exam
 exports.createExam = (0, async_handler_1.asyncHandler)(async (req, res) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     // Only admin and lecturer can create exams
     if (((_a = req.user) === null || _a === void 0 ? void 0 : _a.role) !== "admin" && ((_b = req.user) === null || _b === void 0 ? void 0 : _b.role) !== "lecturer") {
         throw new error_response_1.default("Not authorized to create exams", 403);
     }
-    const exam = await exam_model_1.Exam.create(Object.assign(Object.assign({}, req.body), { lecturer: (_c = req.user) === null || _c === void 0 ? void 0 : _c.id }));
+    const exam = await exam_model_1.Exam.create(Object.assign(Object.assign({}, req.body), { lecturer: (_c = req.user) === null || _c === void 0 ? void 0 : _c.id, organizationId: (_d = req.user) === null || _d === void 0 ? void 0 : _d.organizationId }));
     res.status(201).json({
         success: true,
         data: exam,

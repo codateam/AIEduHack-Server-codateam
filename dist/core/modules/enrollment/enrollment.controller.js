@@ -8,10 +8,10 @@ const async_handler_1 = require("../../../utils/async-handler");
 // @route   POST /api/enrollments
 // @access  Student or Admin
 exports.enrollStudent = (0, async_handler_1.asyncHandler)(async (req, res) => {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     const student = (_b = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : "";
     const { course, level, semester, session } = req.body;
-    const enrollment = await enrollment_service_1.enrollmentService.createEnrollment({ student, course, level, semester, session }, (_e = (_d = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id) === null || _d === void 0 ? void 0 : _d.toString()) !== null && _e !== void 0 ? _e : "", (_g = (_f = req.user) === null || _f === void 0 ? void 0 : _f.role) !== null && _g !== void 0 ? _g : "");
+    const enrollment = await enrollment_service_1.enrollmentService.createEnrollment({ student, course, level, semester, session }, (_e = (_d = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id) === null || _d === void 0 ? void 0 : _d.toString()) !== null && _e !== void 0 ? _e : "", (_g = (_f = req.user) === null || _f === void 0 ? void 0 : _f.role) !== null && _g !== void 0 ? _g : "", (_j = (_h = req.user) === null || _h === void 0 ? void 0 : _h.organizationId) === null || _j === void 0 ? void 0 : _j.toString());
     (0, response_formater_1.response)(res, "Student enrolled successfully", 201, enrollment);
 });
 // @desc    Get enrollments (filtered by student or course)

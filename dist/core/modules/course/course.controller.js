@@ -16,7 +16,7 @@ const ai_services_1 = require("../ai/ai.services");
 exports.createCourse = (0, async_handler_1.asyncHandler)(async (req, res) => {
     var _a, _b;
     const { user } = req;
-    const courseData = Object.assign(Object.assign({}, req.body), { lecturers: [(_b = (_a = user === null || user === void 0 ? void 0 : user.id) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : ""] });
+    const courseData = Object.assign(Object.assign({}, req.body), { lecturers: [(_b = (_a = user === null || user === void 0 ? void 0 : user.id) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : ""], organizationId: user === null || user === void 0 ? void 0 : user.organizationId });
     const course = await course_model_1.default.create(courseData);
     if (course && courseData.courseMaterials && courseData.courseMaterials.length > 0) {
         const data = await (0, ai_services_1.uploadCourseMaterials)(course._id.toString(), courseData.courseMaterials);

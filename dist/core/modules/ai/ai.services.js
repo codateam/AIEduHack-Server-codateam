@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.batchGradeAnswers = exports.generateQuestionWithAI = exports.uploadCourseMaterials = void 0;
 const axios_1 = __importDefault(require("axios"));
-const AI_BASE_URL = "http://127.0.0.1:8000";
+const config_1 = require("../../../config");
+const AI_BASE_URL = config_1.config.AI_BASE_URL;
 /**
  * Upload multiple course materials (PDF URLs) to the AI service.
  * @param courseId - The course ID as a string.

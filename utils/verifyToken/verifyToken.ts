@@ -26,10 +26,25 @@ export const verifyAdmin = (
   const { user } = req;
 
   console.log({ admin: user });
-  if (user !== null && (user as { role?: string })?.role === "admin") {
+  if (user !== null && ((user as { role?: string })?.role === "admin")) {
     next();
   } else {
     throw new ErrorResponse("unauthorized access, only for admin", 401);
+  }
+};
+
+export const verifySuperAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { user } = req;
+
+  console.log({ superAdmin: user });
+  if (user !== null && (user as { role?: string })?.role === "super_admin") {
+    next();
+  } else {
+    throw new ErrorResponse("unauthorized access, only for super admin", 401);
   }
 };
 
