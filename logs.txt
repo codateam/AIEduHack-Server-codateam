@@ -1,0 +1,15 @@
+Listening at http://localhost:5050/api
+Listening at http://localhost:5050/api
+Listening at http://localhost:5050/api
+Listening at http://localhost:5050/api
+connected to database
+connected to database
+connected to database
+MongoNetworkTimeoutError: connection 1 to 65.62.32.219:27017 timed out
+    at Timeout._onTimeout (/Users/mac/Documents/projects/codateam/abike/FYP-backend/node_modules/mongodb/lib/cmap/connection.js:151:23)
+    at listOnTimeout (node:internal/timers:573:17)
+    at process.processTimers (node:internal/timers:514:7) {
+  connectionGeneration: 0,
+  [Symbol(errorLabels)]: Set(1) { 'ResetPool' },
+  [Symbol(beforeHandshake)]: true
+}
