@@ -25,7 +25,7 @@ export const registerStudent = async (
 export const createOrgAdmin = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
-    userData.password = userData.password || "orgadmin123";
+    userData.password = userData.password || "Sosimple@19";
     userData.role = "admin";
     const data = await createUser(userData);
 
@@ -37,9 +37,13 @@ export const createOrgAdmin = async (req: Request, res: Response) => {
 
 export const createLecturer = async (req: Request, res: Response) => {
   try {
+    const user = (req as any).user;
     const userData = req.body;
     userData.password = userData.password || "lecturer";
     userData.role = "lecturer";
+    userData.organizationId = user.organizationId;
+
+    
     const data = await createUser(userData);
     response(res, "Lecturer Added Successfully", 201, data);
   } catch (error: any) {
@@ -78,10 +82,10 @@ export const getLecturers = async (
       search?: string;
       organizationId?: string;
     };
-    
+
     // If user is admin, filter by their organization
     const user = (req as any).user;
-    const orgId = user?.role === 'admin' ? user.organizationId : organizationId;
+    const orgId = user?.role === 'admin' ? user.organizationId.id : organizationId;
     
     const users = await getUsersByRole(
       "lecturer",
@@ -90,6 +94,7 @@ export const getLecturers = async (
       search,
       orgId,
     );
+
     response(res, "Lecturers Retrieved Successfully", 200, users);
   } catch (error: any) {
     res.status(402).json({ message: error.message });
@@ -222,6 +227,7 @@ export const loginWithEmailAndPassword = async (
       const payload: any = {
         ...user._doc,
         id: user._doc._id,
+        organizationId: user._doc?.organizationId?.id ?? ""
       };
       const token = generateToken(payload);
       response(res, "successfully signed in", 200, { user, token });

@@ -36,6 +36,7 @@ export interface IOrganization extends Document {
 
 const organizationSchema = new mongoose.Schema<IOrganization>(
   {
+    
     name: {
       type: String,
       required: [true, "Organization name is required"],

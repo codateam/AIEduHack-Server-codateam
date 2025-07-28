@@ -37,7 +37,8 @@ router.route("/students/register").post(
       minLowercase: 1,
       returnScore: true,
     }),
-    body("orgCode").notEmpty().withMessage("Organization code is required"),
+    body("organizationId").notEmpty().withMessage("Organization id is required"),
+    // body("orgCode").notEmpty().withMessage("Organization code is required"),
   ]),
   registerStudent,
 );
@@ -59,14 +60,14 @@ router
     verifyAdmin,
     validate([
       body("email").notEmpty().isEmail(),
-      body("organizationId").notEmpty().withMessage("Organization is required"),
+      // body("organizationId").notEmpty().withMessage("Organization is required"),
     ]),
     createLecturer
   );
 
 router.route("/org-admins/add").post(
   verifyUser,
-  verifySuperAdmin,
+  verifyAdmin,
   validate([
     body("email").notEmpty().isEmail(),
     body("organizationId").notEmpty().withMessage("Organization is required"),

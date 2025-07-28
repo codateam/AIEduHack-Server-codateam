@@ -42,14 +42,14 @@ export const loginWithEmailAndPassword = async (
 
 export const createUser = async (userData: any) => {
   // Handle organization lookup if orgCode is provided instead of organizationId
-  if (userData.orgCode && !userData.organizationId) {
-    const organization = await getOrganizationByCode(userData.orgCode);
-    if (!organization) {
-      throw new Error("Invalid organization code");
-    }
-    userData.organizationId = organization._id;
-    delete userData.orgCode;
-  }
+  // if (userData.orgCode && !userData.organizationId) {
+  //   const organization = await getOrganizationByCode(userData.orgCode);
+  //   if (!organization) {
+  //     throw new Error("Invalid organization code");
+  //   }
+  //   userData.organizationId = organization._id;
+  //   delete userData.orgCode;
+  // }
 
   if (!userData.organizationId) {
     throw new Error("Organization is required");

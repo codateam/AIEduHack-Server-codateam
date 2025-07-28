@@ -20,7 +20,8 @@ router.route("/students/register").post((0, validation_1.validate)([
         minLowercase: 1,
         returnScore: true,
     }),
-    (0, express_validator_1.body)("orgCode").notEmpty().withMessage("Organization code is required"),
+    (0, express_validator_1.body)("organizationId").notEmpty().withMessage("Organization id is required"),
+    // body("orgCode").notEmpty().withMessage("Organization code is required"),
 ]), auth_controller_1.registerStudent);
 // User retrieval endpoints
 router.route("/students").get(verifyToken_1.verifyUser, verifyToken_1.verifyLecturer, auth_controller_1.getStudents);
@@ -34,9 +35,9 @@ router
     .route("/lecturers/add")
     .post(verifyToken_1.verifyUser, verifyToken_1.verifyAdmin, (0, validation_1.validate)([
     (0, express_validator_1.body)("email").notEmpty().isEmail(),
-    (0, express_validator_1.body)("organizationId").notEmpty().withMessage("Organization is required"),
+    // body("organizationId").notEmpty().withMessage("Organization is required"),
 ]), auth_controller_1.createLecturer);
-router.route("/org-admins/add").post(verifyToken_1.verifyUser, verifyToken_1.verifySuperAdmin, (0, validation_1.validate)([
+router.route("/org-admins/add").post(verifyToken_1.verifyUser, verifyToken_1.verifyAdmin, (0, validation_1.validate)([
     (0, express_validator_1.body)("email").notEmpty().isEmail(),
     (0, express_validator_1.body)("organizationId").notEmpty().withMessage("Organization is required"),
 ]), auth_controller_1.createOrgAdmin);

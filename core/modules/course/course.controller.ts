@@ -33,7 +33,8 @@ export const createCourse = asyncHandler(
 // @route   GET /api/courses
 // @access  All authenticated users
 export const getCourses = asyncHandler(async (req: Request, res: Response) => {
-  const courses = await Course.find().populate("lecturers", "name email");
+  const { organizationId }: any = req.user ;
+  const courses = await Course.find({ organizationId }).populate("lecturers", "name email");
 
   response(res, "Courses retrieved successfully", 200, {
     count: courses.length,

@@ -28,7 +28,8 @@ exports.createCourse = (0, async_handler_1.asyncHandler)(async (req, res) => {
 // @route   GET /api/courses
 // @access  All authenticated users
 exports.getCourses = (0, async_handler_1.asyncHandler)(async (req, res) => {
-    const courses = await course_model_1.default.find().populate("lecturers", "name email");
+    const { organizationId } = req.user;
+    const courses = await course_model_1.default.find({ organizationId }).populate("lecturers", "name email");
     (0, response_formater_1.response)(res, "Courses retrieved successfully", 200, {
         count: courses.length,
         courses,

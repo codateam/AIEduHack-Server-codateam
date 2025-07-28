@@ -29,7 +29,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsersByOrganization = exports.getUsersByRole = exports.createSuperAdmin = exports.createUser = exports.loginWithEmailAndPassword = exports.findUserById = exports.findUser = void 0;
 const auth_model_1 = __importDefault(require("./auth.model"));
 const bcrypt = __importStar(require("bcrypt"));
-const org_service_1 = require("../org/org.service");
 const findUser = async (email, organizationId) => {
     const query = { email: email };
     if (organizationId) {
@@ -62,14 +61,14 @@ const loginWithEmailAndPassword = async (email, password) => {
 exports.loginWithEmailAndPassword = loginWithEmailAndPassword;
 const createUser = async (userData) => {
     // Handle organization lookup if orgCode is provided instead of organizationId
-    if (userData.orgCode && !userData.organizationId) {
-        const organization = await (0, org_service_1.getOrganizationByCode)(userData.orgCode);
-        if (!organization) {
-            throw new Error("Invalid organization code");
-        }
-        userData.organizationId = organization._id;
-        delete userData.orgCode;
-    }
+    // if (userData.orgCode && !userData.organizationId) {
+    //   const organization = await getOrganizationByCode(userData.orgCode);
+    //   if (!organization) {
+    //     throw new Error("Invalid organization code");
+    //   }
+    //   userData.organizationId = organization._id;
+    //   delete userData.orgCode;
+    // }
     if (!userData.organizationId) {
         throw new Error("Organization is required");
     }
