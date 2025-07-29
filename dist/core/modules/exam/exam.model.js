@@ -54,11 +54,11 @@ examSchema.index({ organizationId: 1, lecturer: 1 });
 examSchema.index({ organizationId: 1, session: 1, semester: 1 });
 const questionSchema = new mongoose_1.Schema({
     exam: { type: mongoose_1.Schema.Types.ObjectId, ref: "Exam", required: true },
-    organizationId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Organization",
-        required: [true, "Organization is required"],
-    },
+    // organizationId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Organization",
+    //   required: [true, "Organization is required"],
+    // },
     type: {
         type: String,
         enum: ["mcq", "theory", "german"],

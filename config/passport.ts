@@ -20,7 +20,7 @@ passport.serializeUser((user: any, done) => {
 });
 
 passport.deserializeUser((id: string, done) => {
-  findUserById(id).then((user) => {
+  findUserById(id).then((user: any) => {
     done(null, user);
   });
 });
@@ -34,7 +34,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await loginWithEmailAndPassword(email, password);
+        const user: any = await loginWithEmailAndPassword(email, password);
         if (user) {
           // const userWithId = { ...user, id: user._id };
           return done(null, user);

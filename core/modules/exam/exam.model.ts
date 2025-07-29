@@ -52,7 +52,7 @@ examSchema.index({ organizationId: 1, session: 1, semester: 1 });
 // Question Schema
 export interface IQuestion extends Document {
   exam: mongoose.Types.ObjectId;
-  organizationId: mongoose.Types.ObjectId;
+  // organizationId: mongoose.Types.ObjectId;
   type: "mcq" | "theory" | "german";
   text: string;
   options?: string[];
@@ -63,11 +63,11 @@ export interface IQuestion extends Document {
 const questionSchema = new Schema<IQuestion>(
   {
     exam: { type: Schema.Types.ObjectId, ref: "Exam", required: true },
-    organizationId: {
-      type: Schema.Types.ObjectId,
-      ref: "Organization",
-      required: [true, "Organization is required"],
-    },
+    // organizationId: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Organization",
+    //   required: [true, "Organization is required"],
+    // },
     type: {
       type: String,
       enum: ["mcq", "theory", "german"],
