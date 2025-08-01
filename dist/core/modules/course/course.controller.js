@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.assignLecturer = exports.deleteCourse = exports.updateCourse = exports.getMyCourses = exports.getCourse = exports.getCourses = exports.createCourse = void 0;
+exports.queryAIAgent = exports.assignLecturer = exports.deleteCourse = exports.updateCourse = exports.getMyCourses = exports.getCourse = exports.getCourses = exports.createCourse = void 0;
 const course_model_1 = __importDefault(require("./course.model"));
 const error_response_1 = __importDefault(require("../../../utils/error-response"));
 const async_handler_1 = require("../../../utils/async-handler");
 const response_formater_1 = require("../../../utils/response-formater");
 const ai_services_1 = require("../ai/ai.services");
+const course_service_1 = require("./course.service");
 // import asyncHandler from "../../../utils/async-handler";
 // @desc    Create a new course
 // @route   POST /api/courses
@@ -112,5 +113,21 @@ exports.assignLecturer = (0, async_handler_1.asyncHandler)(async (req, res) => {
     res.status(200).json({
         success: true,
         data: course,
+    });
+});
+exports.queryAIAgent = (0, async_handler_1.asyncHandler)(async (req, res) => {
+    const course_id = req.params.id;
+    const { additional_info, lang } = req.body;
+    if (!course_id || !lang) {
+        throw new error_response_1.default("Please provide course_id and lang", 400);
+    }
+    const response = await course_service_1.CourseService.queryAIAgente({
+        course_id,
+        additional_info,
+        lang,
+    });
+    res.status(200).json({
+        success: true,
+        data: response,
     });
 });

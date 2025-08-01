@@ -6,10 +6,8 @@ import enrollmentRoutes from "../../modules/enrollment/enrollment.routes";
 import examRoutes from "../../modules/exam/exam.routes";
 import questionRoutes from "../../modules/exam/question.routes";
 import answerRoutes from "../../modules/exam/answer.routes";
-// import marketRoutes from "../../../core/modules/market/routes";
-// import storeRoutes from "../../../core/modules/store/routes";
-import { isAuth } from "../../middlewares/is-auth";
-// import productRouters from "../../modules/product/routes";
+import aiRoutes from "../../modules/ai/ai.routes"
+
 
 const router = express.Router();
 
@@ -24,5 +22,6 @@ router.use("/enrollments", enrollmentRoutes);
 router.use("/exams", examRoutes);
 router.use("/questions", questionRoutes);
 router.use("/answers", answerRoutes);
+router.use("/ai", aiRoutes)
 
 export default router;

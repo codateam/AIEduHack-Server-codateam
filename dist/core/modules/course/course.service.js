@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CourseService = void 0;
 const course_model_1 = __importDefault(require("./course.model"));
 const error_response_1 = __importDefault(require("../../../utils/error-response"));
+const ai_services_1 = require("../ai/ai.services");
 class CourseService {
     static async createCourse(courseData) {
         const existingCourse = await course_model_1.default.findOne({ code: courseData.code });
@@ -46,6 +47,13 @@ class CourseService {
     }
     static async getAllCourses() {
         return await course_model_1.default.find().populate("lecturers", "name email");
+    }
+    static async queryAIAgente({ course_id, additional_info, lang, }) {
+        return await (0, ai_services_1.AITeachingAgent)({
+            course_id,
+            additional_info,
+            lang,
+        });
     }
 }
 exports.CourseService = CourseService;
