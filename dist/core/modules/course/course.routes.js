@@ -18,4 +18,5 @@ router
     .put(verifyToken_1.verifyUser, verifyToken_1.verifyLecturer, course_controller_1.updateCourse)
     .delete(verifyToken_1.verifyUser, verifyToken_1.verifyAdmin, course_controller_1.deleteCourse);
 router.post("/:id/assign-lecturer", verifyToken_1.verifyUser, verifyToken_1.verifyAdmin, course_controller_1.assignLecturer);
+router.post("/:id/ai-teaching-agent", verifyToken_1.verifyUser, verifyToken_1.verifyLecturer, course_controller_1.queryAIAgent);
 exports.default = router;

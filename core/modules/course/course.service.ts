@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Course, { ICourse } from "./course.model";
 import ErrorResponse from "../../../utils/error-response";
+import { AITeachingAgent } from "../ai/ai.services";
 
 export interface CourseCreateInput {
   code: string;
@@ -79,5 +80,17 @@ export class CourseService {
 
   static async getAllCourses(): Promise<ICourse[]> {
     return await Course.find().populate("lecturers", "name email");
+  }
+
+  static async queryAIAgente({
+    course_id,
+    additional_info,
+    lang,
+  }: Record<string, string>): Promise<string>{
+    return await AITeachingAgent({
+      course_id,
+      additional_info,
+      lang,
+    })
   }
 }

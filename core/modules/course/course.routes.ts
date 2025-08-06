@@ -7,6 +7,7 @@ import {
   updateCourse,
   deleteCourse,
   assignLecturer,
+  queryAIAgent,
 } from "./course.controller";
 import {
   verifyUser,
@@ -31,5 +32,7 @@ router
   .delete(verifyUser, verifyAdmin, deleteCourse);
 
 router.post("/:id/assign-lecturer", verifyUser, verifyAdmin, assignLecturer);
+
+router.post("/:id/ai-teaching-agent", verifyUser, verifyLecturer, queryAIAgent);
 
 export default router;

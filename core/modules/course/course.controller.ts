@@ -4,6 +4,7 @@ import ErrorResponse from "../../../utils/error-response";
 import { asyncHandler } from "../../../utils/async-handler";
 import { response } from "../../../utils/response-formater";
 import { uploadCourseMaterials } from "../ai/ai.services";
+import { CourseService } from "./course.service";
 // import asyncHandler from "../../../utils/async-handler";
 
 // @desc    Create a new course
@@ -153,3 +154,26 @@ export const assignLecturer = asyncHandler(
     });
   },
 );
+
+
+export const queryAIAgent = asyncHandler(
+  async (req: Request, res: Response) => {
+    const course_id = req.params.id
+    const {  additional_info, lang } = req.body;
+
+    if (!course_id || !lang) {
+      throw new ErrorResponse("Please provide course_id and lang", 400);
+    }
+
+    const response = await  CourseService.queryAIAgente({
+      course_id,
+      additional_info,
+      lang,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: response,
+    });
+  })
+

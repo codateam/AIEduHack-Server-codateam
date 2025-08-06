@@ -34,7 +34,7 @@ const enrollment_routes_1 = __importDefault(require("../../modules/enrollment/en
 const exam_routes_1 = __importDefault(require("../../modules/exam/exam.routes"));
 const question_routes_1 = __importDefault(require("../../modules/exam/question.routes"));
 const answer_routes_1 = __importDefault(require("../../modules/exam/answer.routes"));
-// import productRouters from "../../modules/product/routes";
+const ai_routes_1 = __importDefault(require("../../modules/ai/ai.routes"));
 const router = express.Router();
 router.get("/", (req, res) => {
     res.send({ message: "Welcome to server!" });
@@ -46,4 +46,5 @@ router.use("/enrollments", enrollment_routes_1.default);
 router.use("/exams", exam_routes_1.default);
 router.use("/questions", question_routes_1.default);
 router.use("/answers", answer_routes_1.default);
+router.use("/ai", ai_routes_1.default);
 exports.default = router;
